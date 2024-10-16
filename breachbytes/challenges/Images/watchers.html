@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTF Writeup: The Watchers Challenge</title>
+    <style>
+        /* Dark matte theme with subtle contrast */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.7;
+            color: #e0e0e0;
+            background-color: #181818;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        h1, h2, h3 {
+            color: #64ffda;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        h4 {
+            color: #81a1c1;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        /* Add spacing and lines between steps */
+        .step {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Preformatted code block without scrolling */
+        pre {
+            background-color: #252525;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 15px 0;
+            overflow: visible;
+        }
+
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 85%;
+            color: #ffcb6b;
+        }
+
+        p {
+            text-align: justify;
+            margin: 10px 0;
+            color: #b0bec5;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            text-align: center;
+            font-style: italic;
+            color: #888;
+        }
+
+        /* Responsive breakpoints for mobile */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>CTF Writeup: The Watchers Challenge</h1>
+    
+    <h2>Description</h2>
+    <pre><code>We trust you to find your way into the group, The Watchers. Just a heads-up—they're a bit rough on the selection process</code></pre>
+    
+    <h2>Initial Interface</h2>
+    <p>We are first presented with the following website:</p>
+    <img src="Pasted image 20241015130103.png" alt="Initial website screenshot">
+    
+    <div class="step">
+        <h3>Step 1: Enrollment Process</h3>
+        <p>When we click on Enroll, we are greeted with this first part:</p>
+        <img src="Pasted image 20241015130129.png" alt="Enrollment page screenshot">
+        <p>To pass this phase, we need to set the User-Agent to "the-watcher". We intercept the request and modify it:</p>
+        <pre><code>User-Agent: the-watcher</code></pre>
+    </div>
+    
+    <div class="step">
+        <h3>Step 2: Token Challenge</h3>
+        <p>After modifying the User-Agent, we get this page:</p>
+        <img src="Pasted image 20241015130438.png" alt="Token challenge screenshot">
+        <p>The website expects a token. We find a clue in the source code:</p>
+        <img src="Pasted image 20241015130551.png" alt="Source code clue screenshot">
+        <p>We create a cookie called Auth-token with the MD5 hash of "Still-Breathing":</p>
+        <img src="Pasted image 20241015130719.png" alt="Auth-token cookie screenshot">
+    </div>
+    
+    <div class="step">
+        <h3>Step 3: HEAD Request</h3>
+        <p>After reloading, we get this page:</p>
+        <img src="Pasted image 20241015130734.png" alt="Next challenge screenshot">
+        <p>Noticing the emphasis on "head out", we modify the request to a HEAD request and find this in the response headers:</p>
+        <img src="Pasted image 20241015130939.png" alt="HEAD request response screenshot">
+    </div>
+    
+    <div class="step">
+        <h3>Step 4: Encrypted Email</h3>
+        <p>We access the subdirectory /short-letter-Xk9pLm and find an encrypted email:</p>
+        <img src="Pasted image 20241015131049.png" alt="Encrypted email screenshot">
+        <p>We discover it's encrypted using Vigenère Cipher with the key "patience":</p>
+        <img src="Pasted image 20241015131249.png" alt="Vigenère Cipher decryption screenshot">
+        <img src="Pasted image 20241015131423.png" alt="Decrypted email screenshot">
+    </div>
+    
+    <div class="step">
+        <h3>Step 5: Contacting The Watchers</h3>
+        <p>We use the decrypted email to contact The Watchers:</p>
+        <img src="Pasted image 20241015131515.png" alt="Contact form screenshot">
+        <img src="Pasted image 20241015131605.png" alt="Contact submission screenshot">
+        <p>We receive a response with a new subdirectory:</p>
+        <img src="Pasted image 20241015131628.png" alt="Response with subdirectory screenshot">
+    </div>
+    
+    <div class="step">
+        <h3>Step 6: JWT Token Manipulation</h3>
+        <p>We find a JWT token in the browser storage:</p>
+        <img src="Pasted image 20241015131823.png" alt="JWT token in browser storage screenshot">
+        <p>We decode and modify the JWT token:</p>
+        <img src="Pasted image 20241015131905.png" alt="JWT token decoding screenshot">
+        <p>After several attempts, we guess the secret key "fsociety" and create a new token:</p>
+        <img src="Pasted image 20241015132401.png" alt="New JWT token creation screenshot">
+    </div>
+    
+    <div class="step">
+        <h3>Final Step: Obtaining the Flag</h3>
+        <p>We paste the new JWT token in our browser and reload the website:</p>
+        <img src="Pasted image 20241015132430.png" alt="Flag revealed screenshot">
+        <p>We finally have our flag!</p>
+    </div>
+    
+    <footer>
+        <p>Author: Tushar</p>
+    </footer>
+</body>
+</html>

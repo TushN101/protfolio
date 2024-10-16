@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+    <title>H1dden - Cybersecurity Blog</title>
+    <meta name="description" content="A cool website to publish my CTF writeups.">
+    <meta property="og:title" content="H1dden">
+    <meta property="og:description" content="A super cool website to publish my CTF writeups.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta property="twitter:title" content="H1dden">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-bg: #111111;
+            --body-bg: #151515;
+            --card-bg: #1D1D1D;
+            --text-color: #C5C5C5;
+            --title-color: #E1E1E1;
+            --metadata-color: #8D8D8D;
+            --content-color: #B3B3B3;
+            --tag-bg: #232323;
+            --search-bg: #1A1A1A;
+            --hover-color: #2E2E2E;
+            --card-hover-bg: #252525;
+        }
+        .light-theme {
+            --sidebar-bg: #E8EAF6;
+            --body-bg: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --text-color: #333333;
+            --title-color: #1A237E;
+            --metadata-color: #5C6BC0;
+            --content-color: #3F51B5;
+            --tag-bg: #C5CAE9;
+            --search-bg: #E3F2FD;
+            --hover-color: #BBDEFB;
+            --card-hover-bg: #F0F0F0;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--body-bg);
+            color: var(--text-color);
+            font-size: 13px;
+            line-height: 1.5;
+            transition: background-color 0.3s, color 0.3s;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        .container-fluid {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            height: 100vh;
+            position: fixed;
+            width: 220px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease-in-out, background-color 0.3s;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar-collapsed {
+            transform: translateX(-220px);
+        }
+        .logo-section {
+            text-align: center;
+            margin-bottom: 1.2rem;
+        }
+        .logo-section img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .logo-section img:hover {
+            transform: scale(1.05);
+        }
+        .logo-section h2 {
+            margin-top: 0.8rem;
+            font-weight: 600;
+            color: var(--title-color);
+            font-size: 1.4rem;
+        }
+        .nav-item {
+            margin-bottom: 0.6rem;
+        }
+        .nav-link {
+            color: var(--text-color);
+            transition: all 0.3s;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .nav-link:hover {
+            background-color: var(--hover-color);
+            transform: translateX(3px);
+            color: var(--title-color);
+        }
+        .nav-link i {
+            margin-right: 0.4rem;
+            transition: transform 0.3s;
+        }
+        .nav-link:hover i {
+            transform: scale(1.1);
+        }
+        .social-icons {
+            margin-top: auto;
+            text-align: center;
+        }
+        .social-icons a {
+            color: var(--text-color);
+            font-size: 1rem;
+            margin: 0 0.3rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .social-icons a:hover {
+            color: var(--title-color);
+            transform: translateY(-2px);
+        }
+        .main-content {
+            transition: margin-left 0.3s ease-in-out;
+            padding: 1.2rem;
+            margin-left: 0;
+            padding-top: 100px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 0.8rem;
+            background-color: var(--sidebar-bg);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1040;
+            height: 50px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .header h1 {
+            margin: 0;
+            color: var(--title-color);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .sidebar-toggle, .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.4rem;
+            transition: color 0.3s;
+        }
+        .sidebar-toggle:hover, .theme-toggle:hover {
+            color: var(--title-color);
+        }
+        .main-content {
+            padding-top: 60px;
+        }
+        .sidebar {
+            padding-top: 60px;
+        }
+        @media (min-width: 769px) {
+            .sidebar {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 220px;
+                padding-top: 100px;
+            }
+            .sidebar-toggle {
+                display: none;
+            }
+            .header {
+                left: 220px;
+            }
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-220px);
+            }
+            .sidebar.sidebar-visible {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .header {
+                left: 0;
+            }
+        }
+        /* Styles specific to forgot.html */
+        .writeup-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .writeup-content h1, .writeup-content h2, .writeup-content h3, .writeup-content h4, .writeup-content h5 {
+            color: var(--title-color);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .writeup-content img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        .writeup-content pre {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--hover-color);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 15px 0;
+            overflow: visible;
+        }
+        .writeup-content code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 85%;
+            color: #ffcb6b;
+        }
+        .writeup-content .step {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--hover-color);
+        }
+        /* Breadcrumb styles */
+        .breadcrumb-wrapper {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .breadcrumb {
+            background-color: var(--card-bg);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        .breadcrumb-item {
+            color: var(--metadata-color);
+        }
+        .breadcrumb-item a {
+            color: var(--content-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .breadcrumb-item a:hover {
+            color: var(--title-color);
+        }
+        .breadcrumb-item.active {
+            color: var(--title-color);
+        }
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: ">";
+            color: var(--metadata-color);
+        }
+        /* Add these new styles */
+        .sticky-breadcrumb {
+            position: sticky;
+            top: 50px;
+            z-index: 1030;
+            background-color: var(--body-bg);
+            padding: 10px 0;
+            transition: background-color 0.3s;
+        }
+        /* Adjust main content padding */
+        .main-content {
+            padding-top: 110px;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 sidebar sidebar-collapsed" id="sidebar">
+                <div class="logo-section">
+                    <img src="../../pfp.png" alt="H1dden Logo">
+                    <h2>H1dden</h2>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../index.html"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-folder"></i> Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../aboutme.html"><i class="fas fa-user"></i> About Me</a>
+                    </li>
+                </ul>
+                <div class="social-icons">
+                    <a href="https://github.com/TushN101" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://in.linkedin.com/in/tusharn1x1" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="mailto:tushn4u@gmail.com" aria-label="Contact"><i class="fas fa-envelope"></i></a>
+                </div>
+            </nav>
+            <main class="col-md-9 col-lg-10 main-content" id="mainContent">
+                <header class="header">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1>H1dden</h1>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </header>
+                
+                <div class="sticky-breadcrumb">
+                    <div class="breadcrumb-wrapper">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="../../index.html">Home</a></li>
+                                <li class="breadcrumb-item"><a href="../core.html">BreachBytes</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Forgot Challenge</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="writeup-content">
+                    <h1>C-3 Forgot - CTF Challenge Writeup</h1>
+
+                    <div class="step">
+                        <br><h5>Challenge Description</h5>
+                        <pre><code>Does something feel off in this website's workflow? Can you exploit it and grab the flag?</code></pre>
+                    </div>
+
+                    <div class="step">
+                        <br><h5>Step 1: Initial Reconnaissance</h5>
+                        <p>Upon accessing the website, we're presented with a login page:</p>
+                        <img src="Images/Pasted image 20241015122845.png" alt="Login Page">
+                    </div>
+
+                    <div class="step">
+                        <br><h5>Step 2: Account Creation</h5>
+                        <p>We sign up and create our account:</p>
+                        <img src="Images/Pasted image 20241015122907.png" alt="Signup Page">
+                    </div>
+
+                    <div class="step">
+                        <br><h5>Step 3: Post-Login Page</h5>
+                        <p>After successfully creating an account and logging in, we're presented with this page:</p>
+                        <img src="Images/Pasted image 20241015122958.png" alt="Post-Login Page">
+                        <p>This page hints at a route to get the flag, suggesting we need to somehow access the admin's account.</p>
+                    </div>
+
+                    <div class="step">
+                        <br><h5>Step 4: Exploring "Forgot Password" Feature</h5>
+                        <p>We investigate the "Forgot Password?" feature on the login page:</p>
+                        <img src="Images/Pasted image 20241015123103.png" alt="Forgot Password Option">
+                        <p>We've discovered that the admin's email is: admin@gmail.com</p>
+                    </div>
+
+                    <div class="step">
+                        <br><h5>Step 5: Analyzing the Password Reset Process</h5>
+                        <img src="Images/Pasted image 20241015123254.png" alt="Password Reset Process 1">
+                        <img src="Images/Pasted image 20241015123233.png" alt="Password Reset Process 2">
+                        <p>The process seems to create a token and find the associated email with that token.</p>
+                    </div>
+
+                    <div class="step">
+                        <br><h5>Step 6: Investigating Browser Tokens</h5>
+                        <p>We check our browser for any created tokens and find:</p>
+                        <img src="Images/Pasted image 20241015123407.png" alt="Browser Token">
+                        <p>We discover a hash: <code>Z3JmZ0B0em52eS5wYno=</code></p>
+                    </div>
+
+                    <div class="step">
+                        <br><h5>Step 7: Decoding the Token</h5>
+                        <p>Using CyberChef, we apply base64 decoding:</p>
+                        <img src="Images/Pasted image 20241015123459.png" alt="Base64 Decoding">
+                        <p>The result doesn't make immediate sense, but it feels like an email. We apply ROT13:</p>
+                        <img src="Images/Pasted image 20241015123601.png" alt="ROT13 Decoding">
+                        <p>We discover it's our own email!</p>
+                    </div>
+
+                    <div class="step">
+                        <br><h5>Step 8: Crafting the Admin Token</h5>
+                        <p>We reverse the process for the admin email (admin@gmail.com):</p>
+                        <img src="Images/Pasted image 20241015123657.png" alt="Crafting Admin Token">
+                    </div>
+
+                    <div class="step">
+                        <br><h5>Step 9: Exploiting the Vulnerability</h5>
+                        <p>We insert the crafted value into the token we found earlier and reload the website:</p>
+                        <img src="Images/Pasted image 20241015123753.png" alt="Exploitation Step 1">
+                        <img src="Images/Pasted image 20241015123810.png" alt="Exploitation Step 2">
+                        <img src="Images/Pasted image 20241015123825.png" alt="Exploitation Step 3">
+                    </div>
+
+                    <div class="step">
+                        <br><h5>Conclusion</h5>
+                        <p>We successfully breached the "Forgot Password" feature and reset the admin's password. We obtained the flag without even having to log in as the admin.</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const themeToggle = document.getElementById('themeToggle');
+            const header = document.querySelector('.header');
+            function toggleSidebar() {
+                sidebar.classList.toggle('sidebar-visible');
+                if (window.innerWidth > 768) {
+                    header.style.left = sidebar.classList.contains('sidebar-visible') ? '220px' : '0';
+                    mainContent.style.marginLeft = sidebar.classList.contains('sidebar-visible') ? '220px' : '0';
+                }
+            }
+            sidebarToggle.addEventListener('click', toggleSidebar);
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('light-theme');
+                const icon = themeToggle.querySelector('i');
+                icon.classList.toggle('fa-moon');
+                icon.classList.toggle('fa-sun');
+            });
+            function handleMediaQuery(e) {
+                if (e.matches) {
+                    sidebar.classList.remove('sidebar-visible');
+                    mainContent.style.marginLeft = '0';
+                    header.style.left = '0';
+                } else {
+                    sidebar.classList.add('sidebar-visible');
+                    mainContent.style.marginLeft = '220px';
+                    header.style.left = '220px';
+                }
+            }
+            const mediaQuery = window.matchMedia('(max-width: 768px)');
+            handleMediaQuery(mediaQuery);
+            mediaQuery.addListener(handleMediaQuery);
+            document.addEventListener('click', function(event) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = sidebarToggle.contains(event.target);
+                if (window.innerWidth <= 768 && !isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('sidebar-visible')) {
+                    toggleSidebar();
+                }
+            });
+            document.body.style.userSelect = 'none';
+            document.body.style.webkitUserSelect = 'none';
+            document.body.style.msUserSelect = 'none';
+            document.body.style.mozUserSelect = 'none';
+            document.oncontextmenu = function() { return false; };
+            document.onkeydown = function(e) {
+                if (e.ctrlKey && 
+                    (e.keyCode === 67 || 
+                     e.keyCode === 86 || 
+                     e.keyCode === 85 || 
+                     e.keyCode === 117 ||
+                     e.keyCode === 123 ||
+                     e.keyCode === 73)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            };
+            document.addEventListener('wheel', function(e) {
+                if (e.ctrlKey) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            document.addEventListener('keydown', function(e) {
+                if (e.keyCode === 123 || (
+                    e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74))) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
