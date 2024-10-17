@@ -148,65 +148,6 @@
             margin-left: 0;
             padding-top: 100px;
         }
-        .posts-section {
-            flex: 1;
-            margin-right: 0.8rem;
-        }
-        .card {
-            background-color: var(--card-bg);
-            padding: 0.8rem;
-            margin-bottom: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
-            width: 100%;
-            border: none;
-        }
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-            background-color: var(--card-hover-bg);
-        }
-        .card-title {
-            color: var(--title-color);
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-        }
-        .card-metadata {
-            color: var(--metadata-color);
-            font-size: 0.8rem;
-            margin-bottom: 0.4rem;
-        }
-        .card-content {
-            color: var(--content-color);
-            font-size: 0.9rem;
-        }
-        .sidebar-right {
-            flex: 1;
-        }
-        .footer {
-            margin-top: auto;
-            text-align: center;
-            padding: 0.8rem 0;
-            background-color: var(--sidebar-bg);
-            font-size: 0.8rem;
-        }
-        .footer a {
-            color: var(--text-color);
-            margin: 0 0.3rem;
-            transition: color 0.3s;
-        }
-        .footer a:hover {
-            color: var(--title-color);
-        }
-        .sidebar-toggle {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            font-size: 1rem;
-            cursor: pointer;
-        }
         .header {
             display: flex;
             justify-content: space-between;
@@ -277,6 +218,93 @@
                 left: 0;
             }
         }
+        /* Styles specific to president.html */
+        .writeup-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .writeup-content h1, .writeup-content h2, .writeup-content h3, .writeup-content h4 {
+            color: var(--title-color);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .writeup-content img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        .writeup-content pre {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--hover-color);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 15px 0;
+            overflow: visible;
+        }
+        .writeup-content code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 85%;
+            color: #ffcb6b;
+        }
+        .writeup-content .step {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--hover-color);
+        }
+        /* Breadcrumb styles */
+        .breadcrumb-wrapper {
+            margin-top: -20px;
+            margin-bottom: 20px;
+        }
+        .breadcrumb {
+            background-color: var(--card-bg);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        .breadcrumb-item {
+            color: var(--metadata-color);
+        }
+        .breadcrumb-item a {
+            color: var(--content-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .breadcrumb-item a:hover {
+            color: var(--title-color);
+        }
+        .breadcrumb-item.active {
+            color: var(--title-color);
+        }
+        .breadcrumb-item + .breadcrumb-item:before {
+            content: ">";
+            color: var(--metadata-color);
+        }
+        /* Add these new styles */
+        .sticky-breadcrumb {
+            position: sticky;
+            top: 50px; /* Adjust this value to match the height of your header */
+            z-index: 1030;
+            background-color: var(--body-bg);
+            padding: 10px 0;
+            transition: background-color 0.3s;
+        }
+        .breadcrumb-wrapper {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        /* Adjust main content padding */
+        .main-content {
+            padding-top: 110px; /* Increased to accommodate the sticky breadcrumb */
+        }
+        .writeup-content p {
+            margin-bottom: 0;
+        }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -284,18 +312,18 @@
         <div class="row">
             <nav class="col-md-3 col-lg-2 sidebar sidebar-collapsed" id="sidebar">
                 <div class="logo-section">
-                    <img src="pfp.png" alt="H1dden Logo">
+                    <img src="../../pfp.png" alt="H1dden Logo">
                     <h2>H1dden</h2>
                 </div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html"><i class="fas fa-home"></i> Home</a>
+                        <a class="nav-link" href="../../index.html"><i class="fas fa-home"></i> Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="fas fa-folder"></i> Categories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="aboutme.html"><i class="fas fa-user"></i> About Me</a>
+                        <a class="nav-link" href="../../aboutme.html"><i class="fas fa-user"></i> About Me</a>
                     </li>
                 </ul>
                 <div class="social-icons">
@@ -314,23 +342,64 @@
                         <i class="fas fa-moon"></i>
                     </button>
                 </header>
-                <div class="row">
-                    <div class="col-12 posts-section">
-                        <div class="card" onclick="window.location.href='breachbytes/core.html'" style="cursor: pointer;">
-                            <h2 class="card-title">Breach Bytes 2.0 CTF Writeup</h2>
-                            <div class="card-metadata">October 15, 2024 | writeup </div>
-                            <div class="card-content">
-                                <p>In this writeup, I'll be diving into the web challenges from Breach Bytes 2.0.</p>
-                            </div>
-                        </div>
-                        <div class="card" onclick="window.location.href='deepcytes/core.html'" style="cursor: pointer;">
-                            <h2 class="card-title">DeepCytes POC Writeup</h2>
-                            <div class="card-metadata">October 12, 2024 | poc </div>
-                            <div class="card-content">
-                                <p>In this writeup, I'll be documenting the process of discovering vulnerabilities in (CMS) and presenting their Proof of Concept (POC).</p>
-                            </div>
-                        </div>
+                
+                <div class="sticky-breadcrumb">
+                    <div class="breadcrumb-wrapper">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="../../index.html">Home</a></li>
+                                <li class="breadcrumb-item"><a href="../core.html">DeepCytes</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Wordpress Username POC</li>
+                            </ol>
+                        </nav>
                     </div>
+                </div>
+
+                <div class="writeup-content">
+                    <h1>Wordpress Username POC</h1>
+                     
+                    <br><h5>Initial Interface</h5>
+                    <p>We can see that we have a wordpress blog page :</p>
+                    <img src="Images/Pasted image 20241016033721.png" alt="Initial website screenshot">
+                    
+                    <div class="step">
+                        <br><h5>1. Enumeration</h5>
+                        <p>We have a login page: </p>
+                        <img src="Images/Pasted image 20241016033746.png" alt="Web Directories Screenshot">
+                        <p>We can try random credentials but it throws error :</p>
+                        <img src="Images/Pasted image 20241016033808.png" alt="Web Directories Screenshot">
+                        <p>But instead of saying credentials were wrong it points out that the username is invalid.</p>
+                    </div>
+
+                    <div class="step">
+                        <br><h6>2. Harvesting Username</h6>
+                        <p>We intercept that login request and send it to burp :</p>
+                        <img src="Images/Pasted image 20241016033918.png" alt="Burp Screenshot">
+                        <p>We set the payload and we start the intruder and we get hit on one username :</p>
+                        <img src="Images/Pasted image 20241016033958.png" alt="Bruteforcing username using intruder">
+                        <p>Conclusion: Now we know username as "Elliot"</p>
+                    </div>
+
+                    <div class="step">
+                        <br><h6>3. Brute Forcing Password</h6>
+                        <p>We can use WPSCAN and then bruteforce to find the password :</p>
+                        <img src="Images/Pasted image 20241016034104.png" alt="Google search on what is CMS Made simple">
+                        <p>As the attack goes,  after some time we find the credentials for the user elliot :</p>
+                        <img src="Images/Pasted image 20241016034137.png" alt="Screenshot of version of CMS Made simple">
+                    </div>
+
+                    <div class="step">
+                        <br><h6>4. Exploitation</h6>
+                        <p>We enter the credentials we got :</p>
+                        <img src="Images/Pasted image 20241016034221.png" alt="Search for exploits on exploitdb">
+                        <p>We have editor access on the website :</p>
+                        <img src="Images/Pasted image 20241016034247.png" alt="Exploit for the version of CMS">
+                    </div>
+
+                    <div class="step">
+                    <br><h5>> Conclusion</h5>
+                    <p>Hence by exploiting a vulnerable version of wordpress we leveraged this and gained editorial access on the website.</p>
+                    </div>  
                 </div>
             </main>
         </div>
@@ -402,7 +471,8 @@
                 }
             }, { passive: false });
             document.addEventListener('keydown', function(e) {
-                if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74))) {
+                if (e.keyCode === 123 || (
+                    e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74))) {
                     e.preventDefault();
                 }
             });
